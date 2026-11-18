@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LlaveCRM — Acceso Corporativo</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">LLAVE<span>CRM</span></a>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="catalogo.html">Proyectos</a>
+            <a href="simulador.html">Simulador</a>
+            <a href="login.html" class="active btn-nav-login">Ingreso Empresa</a>
+        </nav>
+    </header>
+
+    <div class="main-container" style="margin: auto;">
+        <div class="card-dark">
+            
+            <!-- Pestañas de Alternancia (Login / Registro) -->
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border-yellow); padding-bottom: 0.5rem;">
+                <button id="tabLogin" onclick="mostrarTab('login')" style="flex:1; background:none; border:none; color:var(--yellow-main); font-weight:900; font-size:1.1rem; cursor:pointer;">INICIAR SESIÓN</button>
+                <button id="tabRegistro" onclick="mostrarTab('registro')" style="flex:1; background:none; border:none; color:var(--text-muted); font-weight:700; font-size:1.1rem; cursor:pointer;">REGISTRARSE</button>
+            </div>
+
+            <p style="margin: -1rem 0 1.2rem; color: var(--text-muted); font-size: .78rem; line-height: 1.5;">Cuenta de demostración: <strong style="color: var(--yellow-main);">julian@casa.com</strong> / <strong style="color: var(--yellow-main);">12345</strong>. Puede crear otras cuentas desde Registrarse.</p>
+
+            <!-- FORMULARIO INICIO DE SESIÓN -->
+            <form id="formLogin">
+                <div class="form-group">
+                    <label for="correo">Correo Corporativo:</label>
+                    <input type="email" id="correo" class="form-control" placeholder="julian@casa.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" class="form-control" placeholder="12345" required>
+                </div>
+
+                <button type="submit" class="btn-gold">Ingresar al Sistema</button>
+            </form>
+
+            <!-- FORMULARIO REGISTRO DE USUARIO -->
+            <form id="formRegistro" style="display: none;">
+                <div class="form-group">
+                    <label for="regNombre">Nombre Completo:</label>
+                    <input type="text" id="regNombre" class="form-control" placeholder="Julián Pérez" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="regCorreo">Correo Electrónico:</label>
+                    <input type="email" id="regCorreo" class="form-control" placeholder="usuario@empresa.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="regPass">Contraseña:</label>
+                    <input type="password" id="regPass" class="form-control" placeholder="Minimo 5 caracteres" minlength="5" required>
+                </div>
+
+                <button type="submit" class="btn-gold">Crear Cuenta</button>
+            </form>
+
+            <div id="mensajeAlerta" style="display: none; margin-top: 1.5rem; padding: 0.8rem; border-radius: 6px; text-align: center; font-size: 0.9rem; font-weight: 700;"></div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 LlaveCRM — Sistema de Gestión Inmobiliaria</p>
+    </footer>
+
+    <script src="js/bd.js"></script>
+<script src="app.js"></script>
+    <script>
+      function mostrarTab(tab) {
+        const login = tab === 'login';
+        document.getElementById('formLogin').style.display = login ? 'block' : 'none';
+        document.getElementById('formRegistro').style.display = login ? 'none' : 'block';
+        document.getElementById('tabLogin').style.color = login ? 'var(--yellow-main)' : 'var(--text-muted)';
+        document.getElementById('tabRegistro').style.color = login ? 'var(--text-muted)' : 'var(--yellow-main)';
+        document.getElementById('mensajeAlerta').style.display = 'none';
+      }
+      function mostrarMensaje(texto, ok) {
+        const msg = document.getElementById('mensajeAlerta');
+        msg.textContent = texto; msg.style.display = 'block';
+        msg.style.backgroundColor = ok ? 'rgba(16,185,129,.2)' : 'rgba(239,68,68,.2)';
+        msg.style.color = ok ? '#10b981' : '#ef4444';
+        msg.style.border = '1px solid ' + (ok ? '#10b981' : '#ef4444');
+      }
+      document.getElementById('formLogin').addEventListener('submit', function(e) {
+        e.preventDefault();
+        try {
+          LlaveCRM.login(document.getElementById('correo').value, document.getElementById('password').value);
+          mostrarMensaje('Acceso concedido. Abriendo el panel comercial...', true);
+          const next = new URLSearchParams(location.search).get('next');
+          setTimeout(() => location.href = next === 'dashboard.html' ? next : 'dashboard.html', 350);
+        } catch (error) { mostrarMensaje(error.message, false); }
+      });
+      document.getElementById('formRegistro').addEventListener('submit', function(e) {
+        e.preventDefault();
+        try {
+          LlaveCRM.register(document.getElementById('regNombre').value, document.getElementById('regCorreo').value, document.getElementById('regPass').value);
+          document.getElementById('correo').value = document.getElementById('regCorreo').value.trim();
+          document.getElementById('password').value = document.getElementById('regPass').value;
+          mostrarMensaje('Cuenta creada correctamente. Ya puede iniciar sesion.', true);
+          setTimeout(() => mostrarTab('login'), 700);
+        } catch (error) { mostrarMensaje(error.message, false); }
+      });
+      LlaveCRM.init();
+    </script>
+</body>
+</html>

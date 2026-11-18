@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LlaveCRM — Simulador Financiero</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">LLAVE<span>CRM</span></a>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="catalogo.html">Proyectos</a>
+            <a href="simulador.html" class="active">Simulador</a>
+            <a href="login.html" class="btn-nav-login">Ingreso Empresa</a>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <div class="card-dark">
+            <h1 class="titulo-pagina">Simulador de Crédito</h1>
+            <p class="subtitulo-pagina">Calcula la proyección mensual estimada para la adquisición de vivienda.</p>
+
+            <form id="formSimulador">
+                <div class="form-group">
+                    <label for="monto">Valor del Inmueble ($ COP):</label>
+                    <input type="number" id="monto" class="form-control" placeholder="Ej: 200000000" min="1" step="1000" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="plazo">Plazo de Financiación (Años):</label>
+                    <select id="plazo" class="form-control">
+                        <option value="5">5 Años</option>
+                        <option value="10">10 Años</option>
+                        <option value="15" selected>15 Años</option>
+                        <option value="20">20 Años</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-gold">Calcular Proyección</button>
+            </form>
+
+            <div id="resultado" style="display: none; margin-top: 2rem; padding: 1.5rem; background-color: #0f172a; border: 2px solid var(--yellow-main); border-radius: 8px;">
+                <h4 style="color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Cuota Mensual Estimada</h4>
+                <div id="montoResultado" style="font-size: 2.2rem; font-weight: 900; color: var(--yellow-main); margin: 0.5rem 0;">$0 COP</div>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">*Cálculo sobre tasa de referencia mensual del 1.1%. Sujeto a estudio de crédito comercial.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 LlaveCRM — Sistema de Gestión Inmobiliaria</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

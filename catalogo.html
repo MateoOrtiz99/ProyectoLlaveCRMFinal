@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LlaveCRM — Catálogo de Proyectos</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">LLAVE<span>CRM</span></a>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="catalogo.html" class="active">Proyectos</a>
+            <a href="simulador.html">Simulador</a>
+            <a href="login.html" class="btn-nav-login">Ingreso Empresa</a>
+        </nav>
+    </header>
+
+    <!-- Barra delgada superior para maximizar el espacio visual -->
+    <div style="background-color: #090d16; border-bottom: 1px solid var(--border-yellow); padding: 0.5rem 2rem; text-align: center; flex-shrink: 0;">
+        <h1 style="font-size: 1.1rem; font-weight: 900; color: var(--yellow-main); text-transform: uppercase; letter-spacing: 2px; margin: 0;">
+            Portafolio de Inmuebles
+        </h1>
+    </div>
+
+    <!-- Grilla principal de 4 columnas a pantalla completa -->
+    <main class="grid-madcons">
+
+        <!-- PROYECTO 1 -->
+        <div class="col-proyecto" style="background-image: url('imagenes/okavango.jpeg');">
+            <div class="col-contenido">
+                <div class="badge-container">
+                    <span class="badge-venta">En Venta</span>
+                </div>
+                <div class="info-proyecto">
+                    <p>Desde $210.000.000 COP</p>
+                    <h3>Proyecto Okavango</h3>
+                    <a href="simulador.html" class="btn-link">Simular Cuota &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROYECTO 2 -->
+        <div class="col-proyecto" style="background-image: url('imagenes/santaCatalina.jpg');">
+            <div class="col-contenido">
+                <div class="badge-container">
+                    <span class="badge-venta">Aplica Subsidio</span>
+                    
+                </div>
+                <div class="info-proyecto">
+                    <p>Desde $175.000.000 COP</p>
+                    <h3>Santa Catalina</h3>
+                    <a href="simulador.html" class="btn-link">Simular Cuota &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROYECTO 3 -->
+        <div class="col-proyecto" style="background-image: url('imagenes/llanosdeCalibio.jpeg');">
+            <div class="col-contenido">
+                <div class="badge-container">
+                    <span class="badge-venta">En Venta</span>
+                </div>
+                <div class="info-proyecto">
+                    <p>Desde $135.000.000 COP</p>
+                    <h3>Llanos de Calibío</h3>
+                    <a href="simulador.html" class="btn-link">Simular Cuota &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROYECTO 4: PROXIMOS LANZAMIENTOS -->
+        <div class="col-proyecto" style="background-image: url('imagenes/Pronto.jpeg');">
+            <div class="col-contenido">
+                <div class="badge-container">
+                    <span class="badge-venta" style="background-color: #ffffff; color: #000000;">Próximamente</span>
+                </div>
+                <div class="info-proyecto">
+                    <p>Nuevos Lanzamientos</p>
+                    <h3>Próximos Proyectos</h3>
+                    <a href="simulador.html" class="btn-link">Saber Más &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 LlaveCRM — Sistema de Gestión Inmobiliaria</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LlaveCRM — Centro de Control Asesor</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">LLAVE<span>CRM</span></a>
+        <div style="color: var(--text-muted); font-size: 0.85rem; font-weight: 700;">
+            Bienvenido, <span id="nombreAsesor" style="color: var(--yellow-main);">Asesor</span> (Asesor Comercial)
+        </div>
+        <nav>
+            <a href="#" id="btnCerrarSesion" class="btn-nav-login" style="background-color: #ef4444; color: white !important;">Cerrar Sesión</a>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+        
+        <!-- Menú Lateral -->
+        <aside class="sidebar">
+            <button class="btn-menu active" onclick="cambiarModulo('panel', this)">📊 Panel Principal</button>
+            <button class="btn-menu" onclick="cambiarModulo('clientes', this)">👥 Base de Clientes</button>
+            <button class="btn-menu" onclick="cambiarModulo('inventario', this)">🏢 Inventario Inmuebles</button>
+            <button class="btn-menu" onclick="cambiarModulo('ia', this)">🤖 Sugerencias IA</button>
+        </aside>
+
+        <!-- Área de Trabajo -->
+        <main class="content-area">
+            
+            <!-- MÓDULO 1: PANEL PRINCIPAL Y CLIENTES -->
+            <div id="mod-panel" class="seccion-modulo activa">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4>Prospectos Activos</h4>
+                        <div class="value" id="totalProspectos">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Cotizaciones Mes</h4>
+                        <div class="value">12</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Ventas Cerradas</h4>
+                        <div class="value">$520M</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Efectividad Cierre</h4>
+                        <div class="value">68%</div>
+                    </div>
+                </div>
+
+                <div style="background-color: var(--bg-card); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-yellow);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="color: var(--yellow-main); font-size: 1.1rem; text-transform: uppercase; font-weight: 800;">Base de Datos de Clientes</h3>
+                        <button class="btn-gold" style="width: auto; padding: 0.5rem 1rem; font-size: 0.8rem;" onclick="abrirModal()">+ Nuevo Cliente</button>
+                    </div>
+
+                    <table class="tabla-clientes">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Contacto</th>
+                                <th>Proyecto Interés</th>
+                                <th>Presupuesto</th>
+                                <th>Estado</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaClientes"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- MÓDULO 2: BASE DE CLIENTES DEDICADA -->
+<div id="mod-clientes" class="seccion-modulo">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+            <h2 style="font-size: 1.5rem; color: var(--yellow-main); text-transform: uppercase; font-weight: 900;">Gestión Avanzada de Clientes</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">Directorio completo de prospectos, historial y exportación.</p>
+        </div>
+        <button class="btn-gold" style="width: auto; padding: 0.6rem 1.2rem; font-size: 0.85rem;" onclick="abrirModal()">+ Nuevo Cliente</button>
+    </div>
+
+    <!-- Barra de Búsqueda y Filtros -->
+    <div style="background-color: var(--bg-card); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-yellow); margin-bottom: 1.5rem; display: flex; gap: 1rem;">
+        <input type="text" id="buscadorClientes" class="form-control" placeholder="🔍 Buscar cliente por nombre o teléfono..." onkeyup="filtrarClientes()" style="flex: 2;">
+        <select id="filtroProyecto" class="form-control" onchange="filtrarClientes()" style="flex: 1;">
+            <option value="">Todos los Proyectos</option>
+            <option value="Santa Catalina">Santa Catalina</option>
+            <option value="Llanos de Calibío">Llanos de Calibío</option>
+            <option value="Okavango">Okavango</option>
+        </select>
+        <button class="btn-gold" style="width: auto; padding: 0.5rem 1rem; font-size: 0.8rem; background-color: #334155; color: white;" onclick="exportarClientes()">📥 Exportar</button>
+    </div>
+
+    <!-- Tabla Completa de la Base de Clientes -->
+    <div style="background-color: var(--bg-card); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-yellow);">
+        <table class="tabla-clientes">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Contacto</th>
+                    <th>Proyecto</th>
+                    <th>Presupuesto</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="tablaBaseClientes"></tbody>
+        </table>
+    </div>
+</div>
+
+            <!-- MÓDULO 3: INVENTARIO -->
+            <div id="mod-inventario" class="seccion-modulo">
+                <h2 class="titulo-pagina" style="text-align: left; font-size: 1.8rem;">Inventario Disponibilidad</h2>
+                <div class="stats-grid" style="margin-top: 1rem;">
+                    <div class="stat-card"><h4>Okavango</h4><div class="value">8 Unidades</div></div>
+                    <div class="stat-card"><h4>Santa Catalina</h4><div class="value">4 Unidades</div></div>
+                    <div class="stat-card"><h4>Llanos de Calibío</h4><div class="value">12 Unidades</div></div>
+                </div>
+            </div>
+
+            <!-- MÓDULO 4: IA -->
+            <div id="mod-ia" class="seccion-modulo">
+                <h2 class="titulo-pagina" style="text-align: left; font-size: 1.8rem;">Sugerencias Predictivas IA</h2>
+                <div style="background-color: #0f172a; border-left: 5px solid var(--yellow-main); padding: 1.5rem; border-radius: 8px; margin-top: 1rem;">
+                    <p style="color: var(--yellow-main); font-weight: 800;">🤖 Recomendación activa:</p>
+                    <p>"El cliente <strong>Carlos Mendoza</strong> ha consultado la simulación 2 veces en 24h. Enviar oferta de descuento comercial sobre Parqueadero."</p>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- MODAL REGISTRO NUEVO CLIENTE -->
+    <div id="modalCliente" class="modal-overlay">
+        <div class="modal-body">
+            <h3 style="color: var(--yellow-main); font-size: 1.3rem; margin-bottom: 1rem; text-transform: uppercase;">Agregar Nuevo Cliente</h3>
+            <form id="formNuevoCliente">
+                <div class="form-group">
+                    <label>Nombre Completo:</label>
+                    <input type="text" id="nomCliente" class="form-control" required placeholder="Ej: Andrés Gómez">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono:</label>
+                    <input type="text" id="telCliente" class="form-control" required placeholder="Ej: 315 000 0000">
+                </div>
+                <div class="form-group">
+                    <label>Proyecto de Interés:</label>
+                    <select id="proyCliente" class="form-control">
+                        <option value="Santa Catalina">Santa Catalina</option>
+                        <option value="Llanos de Calibío">Llanos de Calibío</option>
+                        <option value="Okavango">Okavango</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Presupuesto Estimado ($ COP):</label>
+                    <input type="number" id="presCliente" class="form-control" required placeholder="Ej: 150000000">
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn-gold" style="background-color: #475569; color: white;" onclick="cerrarModal()">Cancelar</button>
+                    <button type="submit" class="btn-gold">Guardar Cliente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 LlaveCRM — Sistema de Gestión Inmobiliaria</p>
+    </footer>
+
+    <script src="js/bd.js"></script>
+    <script src="app.js"></script>
+    <script>
+      let clienteEditando = null;
+      const $ = id => document.getElementById(id);
+      function cambiarModulo(idModulo, boton) {
+        document.querySelectorAll('.seccion-modulo').forEach(mod => mod.classList.remove('activa'));
+        document.querySelectorAll('.btn-menu').forEach(btn => btn.classList.remove('active'));
+        $('mod-' + idModulo).classList.add('activa'); boton.classList.add('active');
+      }
+      function abrirModal(id) {
+        clienteEditando = id ? Number(id) : null;
+        const cliente = id ? LlaveCRM.getClients().find(c => c.id === Number(id)) : null;
+        $('nomCliente').value = cliente?.name || '';
+        $('telCliente').value = cliente?.phone || '';
+        $('proyCliente').value = cliente?.project || 'Okavango';
+        $('presCliente').value = cliente?.budget || '';
+        $('modalCliente').querySelector('h3').textContent = cliente ? 'Editar cliente' : 'Agregar nuevo cliente';
+        $('modalCliente').style.display = 'flex';
+      }
+      function cerrarModal() { $('modalCliente').style.display = 'none'; clienteEditando = null; $('formNuevoCliente').reset(); }
+      function estadoClase(status) {
+        const value = status.toLowerCase();
+        if (value.includes('prioridad') || value.includes('interesado')) return 'estado-caliente';
+        if (value.includes('cierre')) return 'estado-cierre';
+        return 'estado-seguimiento';
+      }
+      function crearCelda(texto) { const td = document.createElement('td'); td.textContent = texto; return td; }
+      function renderClientes() {
+        const clients = LlaveCRM.getClients();
+        $('totalProspectos').textContent = clients.length;
+        const home = $('listaClientes'); const all = $('tablaBaseClientes');
+        home.replaceChildren(); all.replaceChildren();
+        clients.forEach(c => {
+          const tr = document.createElement('tr');
+          tr.append(crearCelda(c.name), crearCelda(c.phone), crearCelda(c.project), crearCelda(LlaveCRM.money(c.budget)));
+          const status = document.createElement('td'); const badge = document.createElement('span');
+          badge.className = 'badge-estado ' + estadoClase(c.status); badge.textContent = c.status; status.append(badge); tr.append(status);
+          const actions = document.createElement('td');
+          actions.append(actionButton('Simular','btn-gold',()=>cotizarCliente(c.budget)), actionButton('Editar','btn-secondary',()=>abrirModal(c.id)), actionButton('Eliminar','btn-danger',()=>eliminarCliente(c.id)));
+          tr.append(actions); home.append(tr);
+          const row = document.createElement('tr'); row.className='fila-cliente';
+          row.append(crearCelda('#'+String(c.id).padStart(3,'0')),crearCelda(c.name),crearCelda(c.phone),crearCelda(c.project),crearCelda(LlaveCRM.money(c.budget)));
+          const state = document.createElement('td'); const stateBadge=document.createElement('span'); stateBadge.className='badge-estado '+estadoClase(c.status); stateBadge.textContent=c.status; state.append(stateBadge); row.append(state);
+          const ops=document.createElement('td'); ops.append(actionButton('Cotizar','btn-gold',()=>cotizarCliente(c.budget)),actionButton('Editar','btn-secondary',()=>abrirModal(c.id)),actionButton('Eliminar','btn-danger',()=>eliminarCliente(c.id))); row.append(ops); all.append(row);
+        });
+        filtrarClientes();
+      }
+      function actionButton(label, cls, callback) { const b=document.createElement('button'); b.type='button'; b.className=cls; b.textContent=label; b.addEventListener('click',callback); return b; }
+      function eliminarCliente(id) { if (confirm('¿Desea eliminar este cliente?')) { LlaveCRM.deleteClient(id); renderClientes(); } }
+      function cotizarCliente(monto) { window.location.href = 'simulador.html?monto=' + encodeURIComponent(monto); }
+      function filtrarClientes() {
+        if (!$('buscadorClientes')) return;
+        const q=$('buscadorClientes').value.trim().toLowerCase(); const project=$('filtroProyecto').value.toLowerCase();
+        document.querySelectorAll('#tablaBaseClientes .fila-cliente').forEach(row => {
+          const text=row.textContent.toLowerCase(); row.style.display=(!q || text.includes(q)) && (!project || text.includes(project)) ? '' : 'none';
+        });
+      }
+      function exportarClientes() {
+        const rows=[['ID','Cliente','Telefono','Proyecto','Presupuesto COP','Estado'],...LlaveCRM.getClients().map(c=>[c.id,c.name,c.phone,c.project,c.budget,c.status])];
+        const csv=rows.map(row=>row.map(value=>'"'+String(value).replace(/"/g,'""')+'"').join(';')).join('\r\n');
+        const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}); const url=URL.createObjectURL(blob);
+        const a=document.createElement('a'); a.href=url; a.download='llavecrm_clientes.csv'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000);
+      }
+      $('formNuevoCliente').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name=$('nomCliente').value.trim(), phone=$('telCliente').value.trim(), project=$('proyCliente').value, budget=Number($('presCliente').value);
+        if(name.length<3 || phone.replace(/\D/g,'').length<7 || !Number.isFinite(budget) || budget<=0) { alert('Verifique el nombre, telefono y presupuesto.'); return; }
+        const record={name,phone,project,budget,status:'En seguimiento'};
+        if(clienteEditando) LlaveCRM.updateClient(clienteEditando,record); else LlaveCRM.addClient(record);
+        cerrarModal(); renderClientes();
+      });
+      $('btnCerrarSesion').addEventListener('click',e=>{e.preventDefault();LlaveCRM.logout();});
+      $('buscadorClientes').addEventListener('input',filtrarClientes); $('filtroProyecto').addEventListener('change',filtrarClientes);
+      if (LlaveCRM.requireAuth()) { $('nombreAsesor').textContent=LlaveCRM.currentUser().name; renderClientes(); }
+    </script>
+</body>
+</html>
